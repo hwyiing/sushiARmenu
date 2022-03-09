@@ -1,11 +1,26 @@
 // const { default: axios } = require("axios");
 
+
 const submitButton = document.getElementById('submitButton');
 if (submitButton != null) {
     submitButton.addEventListener('click', async() => {
-        //submitButton.style.display = "none"; //button will disappear upon click
+
         await myFunction();
 
+        // const newButton = document.createElement("button");
+        // newButton.setAttribute("class", "button-gradient");
+        // newButton.setAttribute("role", "button");
+        // newButton.setAttribute("id", "startbutton");
+        // var textSpan = document.createElement('span')
+        // textSpan.innerHTML = 'Begin my AR Dining Experience';
+        // textSpan.setAttribute("class", "text");
+        // newButton.appendChild(textSpan);
+
+        // const newDiv = document.getElementById("newdiv");
+        // document.body.insertBefore(newButton, newDiv);
+        // gradientButton = document.getElementById('startbutton');
+        // gradientButton.style.display = "flex";
+        submitButton.style.display = "none"; //button will disappear upon click
     });
 }
 
@@ -20,10 +35,14 @@ async function myFunction() {
     console.log('hii');
     console.log(obj);
     var myObject;
-    await axios.get('http://localhost:3000/api/ukyd', { params: obj }).then((response) => {
+    await axios.get('http://localhost:3000/api/UK').then((response) => {
         myObject = response.data;
 
     });
+    // await axios.get('http://localhost:3000/api/ukyd', { params: obj }).then((response) => {
+    //     myObject = response.data;
+
+    // });
     createVideoDivision(myObject);
     //return myObject;
 }
@@ -33,8 +52,10 @@ async function myFunction() {
 async function createVideoDivision(reviewObject) {
     const objectLength = Object.keys(reviewObject).length;
     console.log(objectLength);
-    const currentDiv = document.getElementById("fetchbutton");
+
+    const currentDiv = document.getElementById("my-ar-container");
     const newDiv = document.createElement("div");
+    newDiv.setAttribute("id", "newdiv");
 
     var videoUrl;
     var video;
@@ -57,7 +78,8 @@ function createVideoElement(videoUrl) {
         video.setAttribute('webkit-playsinline', 'webkit-playsinline');
         video.setAttribute('playsinline', 'playsinline');
         video.setAttribute('loop', 'true');
-        //video.setAttribute('style', 'display: none; ')
+        video.setAttribute('style', 'display: none; ');
+        video.setAttribute('class', 'chroma-vid');
     }
     return video;
 }

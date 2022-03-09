@@ -1,10 +1,8 @@
-//start button to overcome IOS browser
-
 // import { loadGLTF, loadVideo } from "../../libs/loader.js";
 // import { LoadingManager } from "../../libs/three.js-r132/build/three.module.js";
 // import { CSS3DObject } from '../../libs/three.js-r132/examples/jsm/renderers/CSS3DRenderer.js';
+import { createChromaMaterial } from './chroma-video.js';
 
-// import { createChromaMaterial } from '../chroma-video';
 const THREE = window.MINDAR.IMAGE.THREE;
 
 // function createVideo(videoUrl){
@@ -22,13 +20,12 @@ const THREE = window.MINDAR.IMAGE.THREE;
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    let loadedTriggerVids, loadedChromaVids = null;
+    let loadedChromaVids = null;
 
     const init = async() => {
         // pre-load videos by getting the DOM elements
-        //loadedTriggerVids = await loadVideos(".trigger-vid");
-        //loadedChromaVids = await loadVideos(".chroma-vid");
+
+        loadedChromaVids = await loadVideos(".chroma-vid");
 
         //should listen for clicks only after first page
         var eventHandler = function(e) {
@@ -44,41 +41,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const mindarThree = new window.MINDAR.IMAGE.MindARThree({
             container: document.querySelector("#my-ar-container"),
             imageTargetSrc: 'targets.mind',
-            uiLoading: "#custom-loading",
+            // uiLoading: "#loading",
         });
         const { renderer, scene, camera } = mindarThree;
 
         const anchors = new Array();
 
-        // make this into another helper function later
+        // make this into helper function later
         // depending on whether we assume no. of loaded vid same as overlay vid
         // need to adjust the ohter helper functions as well
-        // for (var i = 0; i < loadedTriggerVids.length; i++) {
+        for (var i = 0; i < loadedChromaVids.length; i++) {
 
-        //     const video = loadedTriggerVids[i];
-        //     const GSvideo = loadedChromaVids[i];
-        //     const plane = createVideoPlane(video, 1, 9 / 16);
-        //     const GSplane = createGSplane(GSvideo, 1, 3 / 4);
+            const GSvideo = loadedChromaVids[i];
+            const GSplane = createGSplane(GSvideo, 1, 3 / 4);
 
-        //     anchors.push(mindarThree.addAnchor(i));
-        //     const anchor = anchors[i];
+            anchors.push(mindarThree.addAnchor(i));
+            const anchor = anchors[i];
 
-        //     anchor.group.add(plane);
-        //     anchor.group.add(GSplane);
-        //     anchor.onTargetFound = () => {
-        //         video.muted = false;
-        //         video.play();
-        //         GSvideo.play();
-        //     }
-        //     anchor.onTargetLost = () => {
-        //         video.pause();
-        //         GSvideo.pause();
-        //     }
-        //     GSvideo.addEventListener('play', () => {
-        //         GSvideo.currentTime = 2;
-        //     });
+            anchor.group.add(GSplane);
+            anchor.onTargetFound = () => {
+                // video.muted = false;
 
-        // }
+                GSvideo.play();
+            }
+            anchor.onTargetLost = () => {
+                    GSvideo.pause();
+                }
+                // GSvideo.addEventListener('play', () => {
+                //     GSvideo.currentTime = 2;
+                // });
+
+        }
 
         await mindarThree.start();
         renderer.setAnimationLoop(() => {
@@ -86,47 +79,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function hideDiv(id) {
-        document.getElementById(id).style.display = 'none';
+    function hideDiv() {
+        var div = document.getElementById("welcome");
+        div.classList.toggle('hidden');
     }
 
-    function showDiv(id) {
-        document.getElementById(id).style.display = 'block';
-    }
-
+    //start button to overcome IOS browser
     const startButton = document.getElementById('startbutton');
     startButton.addEventListener('click', () => {
         init();
-        hideDiv("welcome");
+        hideDiv();
         startButton.style.display = "none"; //button will disappear upon click
-    });
+    })
 
 });
 
 
 //helper functions
-function createVideoPlane(video, width, height) {
-    const texture = new THREE.VideoTexture(video);
-    const geometry = new THREE.PlaneGeometry(width, height);
-    const material = new THREE.MeshBasicMaterial({ map: texture });
-    const plane = new THREE.Mesh(geometry, material);
-    plane.scale.multiplyScalar(1);
-    plane.position.z = -0.1;
-    return plane;
-}
 
 function createGSplane(GSvideo) {
-    const colorCode = 0x00ff00;
-    //0x82df94;
-    //0xa89690;
-    //0xe4fc64;
-    //0x00ff38;
     const GStexture = new THREE.VideoTexture(GSvideo);
     const GSgeometry = new THREE.PlaneGeometry(1, 1080 / 1920);
-    const GSmaterial = createChromaMaterial(GStexture, colorCode);
+    const GSmaterial = createChromaMaterial(GStexture, 0x00ff38);
     const GSplane = new THREE.Mesh(GSgeometry, GSmaterial);
-    GSplane.scale.multiplyScalar(2);
-    GSplane.position.z = 0.05;
+    GSplane.scale.multiplyScalar(3);
+    //GSplane.position.z = 0.05;
+    GSplane.rotation.z = Math.PI / 2;
+    //GSplane.position.x = -0.2;
+
     return GSplane
 }
 

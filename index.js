@@ -88,8 +88,6 @@ app.get('/api/ukyd', function async(req, res) {
 app.get('/api/UK', function async(req, res) {
 
         var urlDict = {};
-
-
         var expression = 'folder:' + 'un-yang-kor-dai' + '-videos';
         cloudinary.v2.search.expression(expression // add your folder
         ).sort_by('public_id', 'desc').max_results(30).execute().then(result => {
@@ -109,7 +107,6 @@ app.get('/api/UK', function async(req, res) {
     }
 
 );
-
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
