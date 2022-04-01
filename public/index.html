@@ -14,7 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./mindar/mindar-image-three.prod.js"></script>
 
-    <script src="./hi.js" type="module"></script>
     <script src="./main.js" type="module"></script>
 
     <style>
@@ -30,35 +29,21 @@
 <body>
 
     <div id="welcome">
-        <h1> WELCOME </h1>
-        <h2> TO UN YANG KOR DAI'S <a> AUGMENTED REAITY </a>
-            <h2> MENU ! </h2>
-        </h2>
-        <div id="container">
-            <form id="myForm">
-                <h3>Restaurant Name: </h3><input type="text" name="restaurant_name"> <br>
-                <h3>Media Type:</h3>
 
-                <p>
-                    <input type="radio" name="media" value="Images">Images
-                    <input type="radio" name="media" value="Videos" checked> Videos
-                </p> <br>
-                <!-- <input type="submit" value="Submit"> -->
-            </form>
+        <h1> WELCOME TO THE <a> AUGMENTED REALITY </a> DINING EXPERIENCE!
+        </h1>
 
-        </div>
     </div>
-    <button class="button-gradient" role="button" id="startbutton" display="none"><span class="text"> Begin
-        my AR Dining Experinece! </span></button>
-    <button id="submitButton">fetch!</button>
+
+    <div id="ready">
+        <button class="button-gradient" role="button" id="startbutton" style="visibility:hidden"><span class="text"> BEGIN! </span></button>
+    </div>
+
+    <div class="preloader">
+
+    </div>
     <p id="demo"></p>
 
-
-    <div id="loading" class="hidden">
-        <div class="loader-wrapper">
-            <span class="loader"><span class="loader-inner"></span></span>
-        </div>
-    </div>
     <div id="my-ar-container"></div>
 
 

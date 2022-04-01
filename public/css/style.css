@@ -22,82 +22,6 @@ body {
 }
 
 
-/* CSS for loading screen */
-
-#loading.hidden {
-    display: none;
-}
-
-#loading {
-    display: block;
-}
-
-#loading.loader-wrapper {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#loading.loader {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    position: relative;
-    border: 4px solid rgb(255, 212, 95);
-    animation: loader 2s infinite ease;
-}
-
-#loading.loader-inner {
-    vertical-align: top;
-    display: inline-block;
-    width: 100%;
-    background-color: rgb(245, 235, 151);
-    animation: loader-inner 2s infinite ease-in;
-}
-
-@keyframes loader {
-    0% {
-        transform: rotate(0deg);
-    }
-    25% {
-        transform: rotate(180deg);
-    }
-    50% {
-        transform: rotate(180deg);
-    }
-    75% {
-        transform: rotate(360deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes loader-inner {
-    0% {
-        height: 0%;
-    }
-    25% {
-        height: 0%;
-    }
-    50% {
-        height: 100%;
-    }
-    75% {
-        height: 100%;
-    }
-    100% {
-        height: 0%;
-    }
-}
-
-
 /* CSS FOR BUTTON  */
 
 .button-gradient {
@@ -118,7 +42,7 @@ body {
     max-width: 100%;
     padding-left: 20px;
     padding-right: 20px;
-    margin-left: 30px;
+    margin-left: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
     text-decoration: none;
@@ -180,7 +104,7 @@ h2 {
     line-height: 58px;
     margin: 0 0 0;
     padding: 0 30px;
-    text-align: left;
+    text-align: center;
     text-transform: uppercase;
 }
 
@@ -192,7 +116,7 @@ h3 {
     line-height: 58px;
     margin: 0 0 0;
     padding: 0 30px;
-    text-align: left;
+    text-align: center;
 }
 
 p {

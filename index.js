@@ -4,8 +4,6 @@ const port = 3000;
 const axios = require('axios');
 var cloudinary = require('cloudinary');
 
-
-
 cloudinary.config({
     cloud_name: "daqm1fsjr", // add your cloud_name
     api_key: "894691875326772", // add your api_key
@@ -35,60 +33,10 @@ app.get("/", (req, res) => {
 // In this case, we are listening for GET requests to / which is the root of the website.
 // ==========================================================================================
 
-app.get('/api/ukyd', function async(req, res) {
-        console.log('helllo');
-        console.log(req.query);
-
-        var response = {
-            restaurant_name: req.query.restaurant_name.split(' ').join('-'), //replace spaces with dashes
-            media: req.query.media,
-        }
-        var urlDict = {};
-
-
-        if (response.media == "Videos") {
-            var expression = 'folder:' + response.restaurant_name + '-videos';
-            cloudinary.v2.search.expression(expression // add your folder
-            ).sort_by('public_id', 'desc').max_results(30).execute().then(result => {
-                const videos = result.resources;
-
-                videos.forEach((element, index) => {
-                    urlDict[index] = element.url;
-                });
-
-                //res.json(JSON.stringify(urlDict));
-                res.json(urlDict);
-
-
-            }).catch(error => console.error(error));
-        } else if (response.media == "Images") {
-            var _prefix = response.restaurant_name + '-img';
-            cloudinary.v2.api.resources({
-                    resource_type: 'image',
-                    type: 'upload',
-                    prefix: _prefix,
-                })
-                .then(result => {
-                    const images = result.resources;
-
-                    images.forEach((element, index) => {
-                        urlDict[index] = element.url;
-                    });
-                    res.json(urlDict);
-                    // res.end(JSON.stringify(urlDict));
-                })
-                .catch(error => console.error(error));
-        }
-        console.log((`finished fetching ${response.media} URLs from ${response.restaurant_name}`));
-
-    }
-
-);
-
-app.get('/api/UK', function async(req, res) {
+app.get('/api', function async(req, res) {
 
         var urlDict = {};
-        var expression = 'folder:' + 'un-yang-kor-dai' + '-videos';
+        var expression = 'folder:' + 'sushi';
         cloudinary.v2.search.expression(expression // add your folder
         ).sort_by('public_id', 'desc').max_results(30).execute().then(result => {
             const videos = result.resources;
@@ -102,8 +50,6 @@ app.get('/api/UK', function async(req, res) {
 
         }).catch(error => console.error(error));
 
-        console.log((`finished fetching URLs from 'un-yang-kor-dai'`));
-
     }
 
 );
@@ -111,3 +57,54 @@ app.get('/api/UK', function async(req, res) {
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+
+// app.get('/api/ukyd', function async(req, res) {
+//     console.log('helllo');
+//     console.log(req.query);
+
+//     var response = {
+//         restaurant_name: req.query.restaurant_name.split(' ').join('-'), //replace spaces with dashes
+//         media: req.query.media,
+//     }
+//     var urlDict = {};
+
+
+//     if (response.media == "Videos") {
+//         var expression = 'folder:' + response.restaurant_name + '-videos';
+//         cloudinary.v2.search.expression(expression // add your folder
+//         ).sort_by('public_id', 'desc').max_results(30).execute().then(result => {
+//             const videos = result.resources;
+
+//             videos.forEach((element, index) => {
+//                 urlDict[index] = element.url;
+//             });
+
+//             //res.json(JSON.stringify(urlDict));
+//             res.json(urlDict);
+
+
+//         }).catch(error => console.error(error));
+//     } else if (response.media == "Images") {
+//         var _prefix = response.restaurant_name + '-img';
+//         cloudinary.v2.api.resources({
+//                 resource_type: 'image',
+//                 type: 'upload',
+//                 prefix: _prefix,
+//             })
+//             .then(result => {
+//                 const images = result.resources;
+
+//                 images.forEach((element, index) => {
+//                     urlDict[index] = element.url;
+//                 });
+//                 res.json(urlDict);
+//                 // res.end(JSON.stringify(urlDict));
+//             })
+//             .catch(error => console.error(error));
+//     }
+//     console.log((`finished fetching ${response.media} URLs from ${response.restaurant_name}`));
+
+// }
+
+// );
