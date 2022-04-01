@@ -1,7 +1,8 @@
 import { createChromaMaterial } from '/chroma-video.js';
 
 const THREE = window.MINDAR.IMAGE.THREE;
-const baseUrl = process.env.baseURL || "http://localhost:3000"
+//const baseUrl = process.env.baseURL || "http://localhost:3000"
+const baseUrl = window.location.origin || "http://localhost:3000"
 
 const cloudinaryfetch = async() => {
 
