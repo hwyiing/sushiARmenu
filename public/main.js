@@ -3,7 +3,8 @@ import { createChromaMaterial } from '/chroma-video.js';
 const THREE = window.MINDAR.IMAGE.THREE;
 
 const cloudinaryfetch = async() => {
-    await axios.get('http://localhost:3000/api').then((response) => {
+
+    await axios.get(`${baseUrl}/api`).then((response) => {
         const myObject = response.data;
         createVideoDivision(myObject);
     });

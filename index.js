@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express(); //create express app
-const port = 3000;
+const port = process.env.PORT || '3000'
+const baseUrl = process.env.baseURL || "http://localhost:3000"
 const axios = require('axios');
 var cloudinary = require('cloudinary');
 
