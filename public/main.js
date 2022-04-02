@@ -10,12 +10,17 @@ const cloudinaryfetch = async() => {
         const myObject = response.data;
         createVideoDivision(myObject);
     });
+    const delayInMilliseconds = 1000; //1 second
+
+    setTimeout(function() {
+        //your code to be executed after 1 second
+    }, delayInMilliseconds);
     const startButton = document.getElementById('startbutton');
     startButton.style.visibility = "visible"; //button will appear upon load
 }
 
 window.addEventListener('load', (event) => {
-    console.log('page is fully loaded');
+
     cloudinaryfetch();
 });
 
@@ -26,6 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const init = async() => {
 
         // pre-load videos by getting the DOM elements
+        const loadVideos = async(associatedId) => {
+            const loadedVideos = await document.querySelectorAll(associatedId);
+            for (const vid of loadedVideos) {
+                // vid.play();
+                // vid.pause();
+                vid.load();
+            }
+            return loadedVideos;
+        }
         loadedChromaVids = await loadVideos(".chroma-vid");
 
         //should listen for clicks only after first page
@@ -40,36 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const start = async() => {
         const mindarThree = new window.MINDAR.IMAGE.MindARThree({
             container: document.querySelector("#my-ar-container"),
-            imageTargetSrc: 'sushi-targets.mind',
-            // uiLoading: "#loading",
+            imageTargetSrc: 'targets.mind',
+
         });
         const { renderer, scene, camera } = mindarThree;
 
         const anchors = new Array();
-
-        // make this into helper function later
-        // depending on whether we assume no. of loaded vid same as overlay vid
-        // need to adjust the ohter helper functions as well
         for (var i = 0; i < loadedChromaVids.length; i++) {
 
             const GSvideo = loadedChromaVids[i];
             const GSplane = createGSplane(GSvideo, 1, 3 / 4);
 
             anchors.push(mindarThree.addAnchor(i));
-            const anchor = anchors[i];
+            if (i < anchors.length) {
+                const anchor = anchors[i];
 
-            anchor.group.add(GSplane);
-            anchor.onTargetFound = () => {
-                // video.muted = false;
+                anchor.group.add(GSplane);
 
-                GSvideo.play();
-            }
-            anchor.onTargetLost = () => {
+                anchor.onTargetFound = () => {
+                    // video.muted = false;
+                    GSvideo.play();
+                }
+                anchor.onTargetLost = () => {
                     GSvideo.pause();
                 }
-                // GSvideo.addEventListener('play', () => {
-                //     GSvideo.currentTime = 2;
-                // });
+
+
+            }
 
         }
 
@@ -103,23 +114,15 @@ function createGSplane(GSvideo) {
     const GSgeometry = new THREE.PlaneGeometry(1, 1080 / 1920);
     const GSmaterial = createChromaMaterial(GStexture, 0x00ff38);
     const GSplane = new THREE.Mesh(GSgeometry, GSmaterial);
-    GSplane.scale.multiplyScalar(1);
+    GSplane.scale.multiplyScalar(2);
     //GSplane.position.z = 0.05;
-    //GSplane.rotation.z = Math.PI / 2;
+    GSplane.rotation.z = Math.PI / 2;
     //GSplane.position.x = -0.2;
 
     return GSplane
 }
 
-const loadVideos = async(associatedId) => {
-    var loadedVideos = await document.querySelectorAll(associatedId);
-    for (const vid of loadedVideos) {
-        console.log(vid.id, vid.src);
-        vid.play();
-        vid.pause();
-    }
-    return loadedVideos;
-}
+
 
 
 //helper function which creates one division consisting of multiple video elements
@@ -145,6 +148,7 @@ async function createVideoDivision(reviewObject) {
 
 ///helper function which returns a video Element 
 function createVideoElement(videoUrl) {
+    console.log(videoUrl);
     const video = document.createElement("video");
     if (video.canPlayType("video/mp4")) {
         video.setAttribute('src', videoUrl);
