@@ -155,10 +155,13 @@ function createVideoElement(videoUrl) {
         video.setAttribute('preload', 'auto');
         video.setAttribute('crossorigin', 'anonymous');
         video.setAttribute('webkit-playsinline', 'webkit-playsinline');
-        video.setAttribute('playsinline', 'playsinline');
+        //video.setAttribute('playsinline', 'playsinline');
         video.setAttribute('loop', 'true');
         video.setAttribute('style', 'display: none; ');
         video.setAttribute('class', 'chroma-vid');
+        video.setAttribute('type', 'video/mp4');
+        video.muted = true;
+        video.playsInline = true;
     }
     return video;
 }
